@@ -1,0 +1,2 @@
+CREATE DATABASE manuscripts_database_development;
+CREATE DATABASE manuscripts_database_test;

@@ -1,0 +1,2 @@
+export DATABASE_HOST=production_database_post
+export DATABASE_URL=production_database_url
