@@ -1,0 +1,13 @@
+{
+  "name": "manuscripts",
+  "version": "1.0.0",
+  "description": "manuscripts app",
+  "main": "index.js",
+  "repository": "git@github.com:khirayama/manuscripts.git",
+  "author": "khirayama",
+  "license": "MIT",
+  "private": "true",
+  "engines": {
+    "node": ">=0.10.0"
+  }
+}
