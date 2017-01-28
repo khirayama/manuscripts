@@ -23,7 +23,7 @@
     "lint:scripts:fix": "eslint --ignore-path .gitignore --fix src",
     "db:create": "mysql -u root < src/config/db.sql",
     "db:migrate": "sequelize db:migrate --config src/config/config.json",
-    "migration:create": "sequelize migration:create --name"
+    "migration:create": "sequelize migration:create --config src/config/config.json --name"
   },
   "dependencies": {
     "express": "^4.14.0",
