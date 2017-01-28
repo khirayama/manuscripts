@@ -9,5 +9,13 @@
   "private": "true",
   "engines": {
     "node": ">=0.10.0"
+  },
+  "scripts": {
+    "compile:scripts": "babel src --out-dir dist",
+    "compile:scripts:watch": "babel src --out-dir dist -w --source-maps inline"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.22.2",
+    "babel-preset-es2015": "^6.22.0"
   }
 }
