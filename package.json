@@ -11,7 +11,10 @@
     "node": ">=0.10.0"
   },
   "scripts": {
-    "start": "npm run compile:scripts && node dist/index.js",
+    "start": "npm run production",
+    "production": "NODE_ENV=production npm run clean && npm run compile:scripts && npm run server",
+    "server": "node dist/index.js",
+    "clean": "rm -rf dist",
     "compile:scripts": "babel src --out-dir dist",
     "compile:scripts:watch": "babel src --out-dir dist -w --source-maps inline"
   },
