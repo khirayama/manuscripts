@@ -13,7 +13,9 @@
   "scripts": {
     "start": "npm run production",
     "production": "NODE_ENV=production npm run clean && npm run compile:scripts && npm run server",
+    "development": "NODE_ENV=development npm run clean && npm run compile:scripts && (npm run compile:scripts:watch & npm run server:watch)",
     "server": "node dist/index.js",
+    "server:watch": "nodemon --config .nodemonrc.json dist/index.js",
     "clean": "rm -rf dist",
     "compile:scripts": "babel src --out-dir dist",
     "compile:scripts:watch": "babel src --out-dir dist -w --source-maps inline",
@@ -27,6 +29,7 @@
     "babel-cli": "^6.22.2",
     "babel-preset-es2015": "^6.22.0",
     "eslint": "^3.14.1",
-    "eslint-config-xo-space": "^0.15.0"
+    "eslint-config-xo-space": "^0.15.0",
+    "nodemon": "^1.11.0"
   }
 }
