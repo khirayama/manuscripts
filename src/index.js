@@ -28,6 +28,15 @@ app.get('/scripts/new', (req, res) => {
   });
 });
 
+app.get('/scripts/:id', (req, res) => {
+  const scriptId = req.params.id;
+  Script.findById(scriptId).then(script => {
+    res.render('scripts/show', {
+      script,
+    });
+  });
+});
+
 app.post('/scripts', (req, res) => {
   Script.create({
     title: req.body.title,

@@ -13,5 +13,6 @@ html
     ul
     - for (let index = 0; index < scripts.length; index++) {
       - const script = scripts[index];
-      li= script.title
+      li
+        a(href=`/scripts/${script.id}`) #{script.title}
     - }
