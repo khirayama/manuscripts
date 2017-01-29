@@ -18,6 +18,18 @@ app.get('/', (req, res) => {
   });
 });
 
+app.get('/scripts/new', (req, res) => {
+  res.render('scripts/new', {
+    title: 'Write a script',
+  });
+});
+
+app.post('/scripts', (req, res) => {
+  // TODO: create script and links
+  // TODO: get link title when create
+  res.redirect('/');
+});
+
 app.listen(3000, () => {
   console.log('open http://localhost:3000/');
 });

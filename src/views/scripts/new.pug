@@ -1,0 +1,16 @@
+html
+  head
+    title= title
+  body
+    form(method="POST" action="/scripts")
+      table
+        tbody
+          tr
+            th title
+            td
+              input(type="text" name="title")
+          tr
+            th body
+            td
+              textarea(name="body")
+      button submit
