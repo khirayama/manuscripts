@@ -2,4 +2,15 @@ html
   head
     title= title
   body
-    h1= message
+    h2 Popular
+    ul
+    - for (let index = 0; index < links.length; index++) {
+      - const link = links[index];
+      li= link.title
+    - }
+    h2 Popular in Manuscripts
+    ul
+    - for (let index = 0; index < scripts.length; index++) {
+      - const script = scripts[index];
+      li= script.title
+    - }
