@@ -27,6 +27,7 @@
     "migration:create": "sequelize migration:create --config src/config/config.json --name"
   },
   "dependencies": {
+    "body-parser": "^1.16.0",
     "express": "^4.14.0",
     "mysql": "^2.13.0",
     "pug": "^2.0.0-beta9",

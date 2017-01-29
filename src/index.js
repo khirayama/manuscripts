@@ -1,10 +1,14 @@
 import express from 'express';
+import bodyParser from 'body-parser';
 import {Script, Link} from './models';
 
 const app = express();
 
 app.set('views', 'src/views');
 app.set('view engine', 'pug');
+
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
   Script.findAll({limit: 30}).then(scripts => {
