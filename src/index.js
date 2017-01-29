@@ -29,9 +29,14 @@ app.get('/scripts/new', (req, res) => {
 });
 
 app.post('/scripts', (req, res) => {
-  // TODO: create script and links
-  // TODO: get link title when create
-  res.redirect('/');
+  Script.create({
+    title: req.body.title,
+    body: req.body.body,
+  }).then(script => {
+    // TODO: create script and links
+    // TODO: get link title when create
+    res.redirect(`/scripts/${script.id}`);
+  });
 });
 
 app.listen(3000, () => {
