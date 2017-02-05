@@ -9,3 +9,12 @@ html
         a(href="/") Dashboard
     h1= script.title
     p!= scriptBodyHTML
+    - if (mentioned.length > 0) {
+      h2 この記事に言及している記事
+      ul
+        - for (let index = 0; index < mentioned.length; index++) {
+          - const mentionedScript = mentioned[index];
+          li
+            a(href=`${mentionedScript.url}`)= mentionedScript.title
+        - }
+    - }

@@ -28,8 +28,10 @@
   },
   "dependencies": {
     "body-parser": "^1.16.0",
+    "cheerio-httpcli": "^0.6.10",
     "express": "^4.14.0",
     "mysql": "^2.13.0",
+    "normalize-url": "^1.9.0",
     "pug": "^2.0.0-beta9",
     "sequelize": "^3.30.0",
     "sequelize-cli": "^2.5.1"

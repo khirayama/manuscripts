@@ -1,10 +1,15 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import {Script, Link} from './models';
+import client from 'cheerio-httpcli';
+
+import Sequelize from 'sequelize';
+import normalizeUrl from 'normalize-url';
+
+import {Script, Link, ScriptLink} from './models';
 
 const patterns = {
   //URLs starting wth http://, https://, ftp:// or /
-  LINK: /((https?:\/|ftp:\/|)\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim,
+  LINK: /((https?:|ftp:|)\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim,
 
   //URLs starting with "www." (without // before it, or it'd re-link the ones done above).
   WWW_LINK: /(^|[^\/])(www\.[\S]+(\b|$))/gim,
@@ -15,6 +20,24 @@ function linkify(inputText) {
   replacedText = inputText.replace(patterns.LINK, '<a href="$1" target="_blank">$1</a>');
   replacedText = replacedText.replace(patterns.WWW_LINK, '$1<a href="http://$2" target="_blank">$2</a>');
   return replacedText;
+}
+
+function captureUniqueUrls(body) {
+  return [].concat(
+    body.match(patterns.LINK) || [],
+    body.match(patterns.WWW_LINK) || []
+  ).map(link => {
+    return normalizeUrl(link, {
+      normalizeProtocol: true,
+      normalizeHttps: true,
+      removeQueryParameters: [/.+/],
+      removeTrailingSlash: true,
+      stripFragment: true,
+      stripWWW: true,
+    });
+  }).filter((url, index, self) => {
+    return self.indexOf(url) === index;
+  });
 }
 
 const app = express();
@@ -28,10 +51,13 @@ app.use(bodyParser.json());
 app.get('/', (req, res) => {
   Script.findAll({limit: 30}).then(scripts => {
     Link.findAll({limit: 30}).then(links => {
-      res.render('dashboard/index', {
-        title: 'Manuscripts',
-        scripts,
-        links,
+      const Promises = [];
+      links.forEach(link => {
+        res.render('dashboard/index', {
+          title: 'Manuscripts',
+          scripts,
+          links,
+        });
       });
     });
   });
@@ -47,9 +73,44 @@ app.get('/scripts/:id', (req, res) => {
   const scriptId = req.params.id;
   Script.findById(scriptId).then(script => {
     const scriptBodyHTML = linkify(script.body);
-    res.render('scripts/show', {
-      script,
-      scriptBodyHTML,
+
+    Link.findAll({
+      where: {url: 'http://localhost:3000/scripts/' + scriptId},
+    }).then(links => {
+      const link = links[0];
+      if (link) {
+        ScriptLink.findAll({
+          where: {linkId: link.id},
+        }).then(scriptLinks => {
+          if (scriptLinks.length) {
+            const mentionedScripts = [];
+            scriptLinks.forEach(scriptLink => {
+              Script.findById(scriptLink.id).then((mentionedScript) => {
+                mentionedScripts.push(mentionedScript);
+                if (scriptLink.id === scriptLinks[scriptLinks.length - 1].id) {
+                  res.render('scripts/show', {
+                    script,
+                    scriptBodyHTML,
+                    mentioned: mentionedScripts,
+                  });
+                }
+              });
+            });
+          } else {
+            res.render('scripts/show', {
+              script,
+              scriptBodyHTML,
+              mentioned: [],
+            });
+          }
+        });
+      } else {
+        res.render('scripts/show', {
+          script,
+          scriptBodyHTML,
+          mentioned: [],
+        });
+      }
     });
   });
 });
@@ -59,8 +120,26 @@ app.post('/scripts', (req, res) => {
     title: req.body.title,
     body: req.body.body,
   }).then(script => {
-    // TODO: create script and links
-    // TODO: get link title when create
+    const urls = captureUniqueUrls(script.body);
+    // FIXME: want to use bulkCreate.
+    // But I enconter this same issue.
+    // https://github.com/sequelize/sequelize/issues/3908
+    urls.forEach(url => {
+      client.fetch(url, (err, $, res) => {
+        const title = $('title').text();
+
+        Link.findOrCreate({
+          where: {url},
+          defaults: {url, title},
+        }).spread(link => {
+          ScriptLink.create({
+            scriptId: script.id,
+            linkId: link.id,
+          });
+        });
+      });
+    });
+
     res.redirect(`/scripts/${script.id}`);
   });
 });
