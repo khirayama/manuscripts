@@ -52,12 +52,10 @@ app.get('/', (req, res) => {
   Script.findAll({limit: 30}).then(scripts => {
     Link.findAll({limit: 30}).then(links => {
       const Promises = [];
-      links.forEach(link => {
-        res.render('dashboard/index', {
-          title: 'Manuscripts',
-          scripts,
-          links,
-        });
+      res.render('dashboard/index', {
+        title: 'Manuscripts',
+        scripts,
+        links,
       });
     });
   });
@@ -66,6 +64,35 @@ app.get('/', (req, res) => {
 app.get('/scripts/new', (req, res) => {
   res.render('scripts/new', {
     title: 'Write a script',
+  });
+});
+
+app.post('/scripts', (req, res) => {
+  Script.create({
+    title: req.body.title,
+    body: req.body.body,
+  }).then(script => {
+    const urls = captureUniqueUrls(script.body);
+    // FIXME: want to use bulkCreate.
+    // But I enconter this same issue.
+    // https://github.com/sequelize/sequelize/issues/3908
+    urls.forEach(url => {
+      client.fetch(url, (err, $, res) => {
+        const title = $('title').text();
+
+        Link.findOrCreate({
+          where: {url},
+          defaults: {url, title},
+        }).spread(link => {
+          ScriptLink.create({
+            scriptId: script.id,
+            linkId: link.id,
+          });
+        });
+      });
+    });
+
+    res.redirect(`/scripts/${script.id}`);
   });
 });
 
@@ -112,35 +139,6 @@ app.get('/scripts/:id', (req, res) => {
         });
       }
     });
-  });
-});
-
-app.post('/scripts', (req, res) => {
-  Script.create({
-    title: req.body.title,
-    body: req.body.body,
-  }).then(script => {
-    const urls = captureUniqueUrls(script.body);
-    // FIXME: want to use bulkCreate.
-    // But I enconter this same issue.
-    // https://github.com/sequelize/sequelize/issues/3908
-    urls.forEach(url => {
-      client.fetch(url, (err, $, res) => {
-        const title = $('title').text();
-
-        Link.findOrCreate({
-          where: {url},
-          defaults: {url, title},
-        }).spread(link => {
-          ScriptLink.create({
-            scriptId: script.id,
-            linkId: link.id,
-          });
-        });
-      });
-    });
-
-    res.redirect(`/scripts/${script.id}`);
   });
 });
 

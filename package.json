@@ -23,8 +23,8 @@
     "lint:scripts": "eslint --ignore-path .gitignore src",
     "lint:scripts:fix": "eslint --ignore-path .gitignore --fix src",
     "db:create": "mysql -u root < src/config/db.sql",
-    "db:migrate": "sequelize db:migrate --config src/config/config.json",
-    "migration:create": "sequelize migration:create --config src/config/config.json --name"
+    "db:migrate": "sequelize db:migrate --config src/config/config.js",
+    "migration:create": "sequelize migration:create --config src/config/config.js --name"
   },
   "dependencies": {
     "body-parser": "^1.16.0",
