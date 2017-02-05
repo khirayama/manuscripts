@@ -8,12 +8,12 @@ module.exports = {
         allowNull: false
       },
       url: {
-        type: Sequelize.STRING,
-        allowNull: false
+        type: Sequelize.TEXT('long'),
+        allowNull: false,
       },
       title: {
-        type: Sequelize.STRING,
-        allowNull: false
+        type: Sequelize.TEXT('long'),
+        allowNull: false,
       },
       created_at: {
         type: Sequelize.DATE,

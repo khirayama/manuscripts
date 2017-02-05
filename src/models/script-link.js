@@ -26,5 +26,9 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       field: 'updated_at',
     },
-  }, {tableName: 'scripts_links'});
+  }, {
+    tableName: 'scripts_links',
+    timestamps: true,
+    underscored: true,
+  });
 };

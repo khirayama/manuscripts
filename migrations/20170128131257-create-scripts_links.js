@@ -26,6 +26,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('scripts');
+    return queryInterface.dropTable('scripts_links');
   }
 };

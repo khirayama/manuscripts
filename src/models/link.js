@@ -7,12 +7,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     url: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT('long'),
       allowNull: false,
-      unique: true,
     },
     title: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT('long'),
       allowNull: false,
     },
     createdAt: {
@@ -25,5 +24,9 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       field: 'updated_at',
     },
+  }, {
+    tableName: 'links',
+    timestamps: true,
+    underscored: true,
   });
 };
