@@ -64,8 +64,11 @@ app.get('/', (req, res) => {
 });
 
 app.get('/scripts/new', (req, res) => {
+  const ref = `${req.protocol}://${req.headers.host}/scripts/${req.query.id}`;
+
   res.render('scripts/new', {
     title: 'Write a script',
+    ref: (req.query.id) ? ref : null,
   });
 });
 
@@ -120,6 +123,7 @@ app.get('/scripts/:id', (req, res) => {
                   res.render('scripts/show', {
                     script,
                     scriptBodyHTML,
+                    id: scriptId,
                     mentioned: mentionedScripts,
                   });
                 }
@@ -129,6 +133,7 @@ app.get('/scripts/:id', (req, res) => {
             res.render('scripts/show', {
               script,
               scriptBodyHTML,
+              id: scriptId,
               mentioned: [],
             });
           }
@@ -137,6 +142,7 @@ app.get('/scripts/:id', (req, res) => {
         res.render('scripts/show', {
           script,
           scriptBodyHTML,
+          id: scriptId,
           mentioned: [],
         });
       }

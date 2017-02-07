@@ -22,4 +22,8 @@ html
                     th body
                     td
                       textarea(name="body")
+                        - if (ref !== null) {
+                          | Ref:
+                          = ref
+                        - }
               button submit
