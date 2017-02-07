@@ -1,20 +1,25 @@
 html
   head
     title= script.title
+    meta(name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no")
+    link(rel="stylesheet" href="/index.css")
   body
-    ul
-      li
-        a(href="/scripts/new") Write a script
-      li
-        a(href="/") Dashboard
-    h1= script.title
-    p!= scriptBodyHTML
-    - if (mentioned.length > 0) {
-      h2 この記事に言及している記事
-      ul
-        - for (let index = 0; index < mentioned.length; index++) {
-          - const mentionedScript = mentioned[index];
-          li
-            a(href=`${mentionedScript.url}`)= mentionedScript.title
-        - }
-    - }
+    section.application
+      section.page-container
+        section.page
+          section.page-header
+            section.page-header-content
+              a.write-script-button(href="/scripts/new") Write a script
+          section.page-content
+            a(href="/") Dashboard
+            h1= script.title
+            p!= scriptBodyHTML
+            - if (mentioned.length > 0) {
+              h2 この記事に言及している記事
+              ul
+                - for (let index = 0; index < mentioned.length; index++) {
+                  - const mentionedScript = mentioned[index];
+                  li
+                    a(href=`${mentionedScript.url}`)= mentionedScript.title
+                - }
+            - }

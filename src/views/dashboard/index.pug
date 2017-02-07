@@ -1,19 +1,37 @@
 html
   head
     title= title
+    meta(name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no")
+    link(rel="stylesheet" href="/index.css")
   body
-    a(href="/scripts/new") Write a script
-    h2 Popular
-    ul
-    - for (let index = 0; index < links.length; index++) {
-      - const link = links[index];
-      li
-        a(href=`${link.url}` target="_blank") #{link.title}
-    - }
-    h2 Popular in Manuscripts
-    ul
-    - for (let index = 0; index < scripts.length; index++) {
-      - const script = scripts[index];
-      li
-        a(href=`/scripts/${script.id}`) #{script.title}
-    - }
+    section.application
+      section.page-container
+        section.page
+          section.page-header
+            section.page-header-content
+              a.write-script-button(href="/scripts/new") Write a script
+          section.page-content
+            h2 Popular
+            .link-list
+              - for (let index = 0; index < links.length; index++) {
+                - const link = links[index];
+                .link-list-item
+                  a(href=`${link.url}` target="_blank") #{link.title}
+                .link-list-item
+                  a(href=`${link.url}` target="_blank") #{link.title}
+                .link-list-item
+                  a(href=`${link.url}` target="_blank") #{link.title}
+                .link-list-item
+                  a(href=`${link.url}` target="_blank") #{link.title}
+                .link-list-item
+                  a(href=`${link.url}` target="_blank") #{link.title}
+                .link-list-item
+                  a(href=`${link.url}` target="_blank") #{link.title}
+              - }
+            h2 Popular in Manuscripts
+            .script-list
+              - for (let index = 0; index < scripts.length; index++) {
+                - const script = scripts[index];
+                .script-list-item
+                  a(href=`/scripts/${script.id}`) #{script.title}
+              - }

@@ -1,16 +1,25 @@
 html
   head
     title= title
+    meta(name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no")
+    link(rel="stylesheet" href="/index.css")
   body
-    form(method="POST" action="/scripts")
-      table
-        tbody
-          tr
-            th title
-            td
-              input(type="text" name="title")
-          tr
-            th body
-            td
-              textarea(name="body")
-      button submit
+    section.application
+      section.page-container
+        section.page
+          section.page-header
+            section.page-header-content
+              a.write-script-button(href="/scripts/new") Write a script
+          section.page-content
+            form(method="POST" action="/scripts")
+              table
+                tbody
+                  tr
+                    th title
+                    td
+                      input(type="text" name="title")
+                  tr
+                    th body
+                    td
+                      textarea(name="body")
+              button submit

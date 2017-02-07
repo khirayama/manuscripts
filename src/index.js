@@ -1,3 +1,4 @@
+import path from 'path';
 import express from 'express';
 import bodyParser from 'body-parser';
 import client from 'cheerio-httpcli';
@@ -45,6 +46,7 @@ const app = express();
 app.set('views', 'src/views');
 app.set('view engine', 'pug');
 
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
